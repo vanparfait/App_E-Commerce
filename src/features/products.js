@@ -12,6 +12,11 @@ export const productsSlice = createSlice({
       state.items = action.payload;
     },
   },
+  extraReducers: {
+    ["cart/createCartItem"]: (state, action) => {
+      state.items.find((item) => item.id === action.payload.id).picked = true;
+    },
+  },
 });
 
 export function getProductsList(action) {
