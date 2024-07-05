@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteFromCart, updateItemFromSelect } from "../features/cart";
 
 const Cart = ({ onClose }) => {
   const cartValues = useSelector((state) => state.cart);
@@ -32,7 +33,19 @@ const Cart = ({ onClose }) => {
                 <p className="mr-auto ml-2 text-lg font-semibold">
                   {item.title}
                 </p>
-                <select className="w-20 p-2 rounded mr-4" name="quantity">
+                <select
+                  value={item.quantity}
+                  onChange={(e) =>
+                    dispatch(
+                      updateItemFromSelect({
+                        value: e.target.value,
+                        id: item.id,
+                      })
+                    )
+                  }
+                  className="w-20 p-2 rounded mr-4"
+                  name="quantity"
+                >
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -40,7 +53,10 @@ const Cart = ({ onClose }) => {
                   <option value="5">5</option>
                   <option value="6">6</option>
                 </select>
-                <p className="bg-slate-900 text-slate-200 px-2 inline-flex items-center justify-center rounded p-2">
+                <p
+                  onClick={() => dispatch(deleteFromCart(item.id))}
+                  className="bg-slate-900 text-slate-200 px-2 inline-flex items-center justify-center rounded p-2 cursor-pointer"
+                >
                   Remove from cart
                 </p>
               </li>
@@ -50,7 +66,14 @@ const Cart = ({ onClose }) => {
           )}
         </ul>
         <p className="text-xl">
-          Your total :<span className="font-semibold">$</span>
+          Your total :
+          <span className="font-semibold">
+            {" "}
+            {cartValues.cartItems
+              .reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
+              .toFixed(2)}{" "}
+            ${" "}
+          </span>
         </p>
         <button className="block mx-auto bg-slate-800 text-slate-200 rounded px-4 py-2 mt-7">
           Proceed to checkout

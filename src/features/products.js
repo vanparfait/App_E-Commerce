@@ -16,6 +16,9 @@ export const productsSlice = createSlice({
     ["cart/createCartItem"]: (state, action) => {
       state.items.find((item) => item.id === action.payload.id).picked = true;
     },
+    ["cart/deleteFromCart"]: (state, action) => {
+      state.items.find((item) => item.id === action.payload).picked = false;
+    },
   },
 });
 
