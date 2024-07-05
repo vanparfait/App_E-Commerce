@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsList } from "../features/products";
 import { addOneToCart } from "../features/cart";
@@ -8,8 +8,14 @@ const ProductsList = () => {
   console.log(productsValues);
   const dispatch = useDispatch();
 
-  if (!productsValues.items) dispatch(getProductsList());
-  console.log(productsValues);
+  useEffect(() => {
+    if (!productsValues.items) {
+      dispatch(getProductsList());
+    }
+  }, [productsValues.items, dispatch]);
+
+  // if (!productsValues.items) dispatch(getProductsList());
+  // console.log(productsValues);
   return (
     <div className="px-6">
       <h1 className="text-slate-100 text-2xl mb-6">Here are our products</h1>
